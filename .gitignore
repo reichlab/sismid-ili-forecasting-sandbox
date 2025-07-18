@@ -3,3 +3,9 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Exclude non-submission models (keep only best model)
+model-output/sismid-arima210/
+model-output/sismid-var2/
+model-metadata/sismid-arima210.yml
+model-metadata/sismid-var2.yml
