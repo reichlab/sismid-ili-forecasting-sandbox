@@ -1,4 +1,0 @@
-team_abbr: "sismid"
-model_abbr: "ensemblev2"
-designated_model: false
-model_details: "Ensemble based on VAR(2) sqrt with 2% seasonal adjustment. Enhances proven VAR(2) model by boosting forecasts during flu season (Oct-Apr) and reducing in summer (May-Sep)."
