@@ -10,3 +10,4 @@ model_contributors:
 team_model_designation: primary
 methods: auto arima selection on fourth sq root transformed data
 data_inputs: flu_data_hhs
+designated_model: true
