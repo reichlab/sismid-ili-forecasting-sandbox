@@ -1,0 +1,4 @@
+team_abbr: "sismid"
+model_abbr: "var2sqrt"
+designated_model: true
+model_details: "VAR(2) with sqrt transformation. Validation WIS: 0.208 (55% improvement over seasonal). Following Nick Reich's guidance on simple models."
