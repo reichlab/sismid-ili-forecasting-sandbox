@@ -1,12 +1,3 @@
-team_abbr: "AC"
-model_abbr: "model"
-model_contributors: [
-  {
-    "name": "Annalise Cramer",
-    "affiliation": "University of Georgia",
-    "email": "ancramer19@gmail.com"
-  },
-]
+team_abbr: "sismid"
+model_abbr: "arima011"
 designated_model: true
-methods_long: "it's arima(0,1,1). probably doesn't work good"
-ensemble_of_models: false
