@@ -1,3 +1,3 @@
 team_abbr: "sismid"
-model_abbr: "arima210-log10"
+model_abbr: "arima210log10"
 designated_model: true
