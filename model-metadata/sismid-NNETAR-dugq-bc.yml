@@ -1,0 +1,10 @@
+team_abbr: "sismid"
+model_abbr: "NNETAR-dugq-bc"
+designated_model: true
+model_contributors: [
+  {
+    "name": "Daniel U. G. Quezada",
+    "affiliation": "Northeastern University"
+  }
+]
+model_description: "Neural Network Autoregression model for time series forecasting. Small parameter change"
