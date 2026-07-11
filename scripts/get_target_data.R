@@ -10,8 +10,11 @@
 #'     at ~1 July of the following summer is the value the season was actually
 #'     scored against.
 #'   * time-series.csv   : a *versioned* (vintage) observed series carrying an
-#'     `as_of` column. For each forecast reference date R we record the data as
-#'     it was available in real time at R (the latest release on or before R).
+#'     `as_of` column. For each forecast reference date R we record the observed
+#'     history from the start of the 2014/2015 season up to R as it was available
+#'     in real time at R (each week at its latest release on or before R). The
+#'     history is repeated in every snapshot because predtimechart needs it
+#'     present to render.
 #'     predtimechart uses `as_of` = reference_date, so the dashboard's observed
 #'     line shows the data a forecaster actually saw -- revealing reporting
 #'     backfill week to week.
@@ -95,11 +98,13 @@ finalized_ts <- vintage |>
   ungroup() |>
   transmute(location, target_end_date, observation)
 
-season_start <- function(R) {
-  as.Date(ifelse(month(R) >= 8,
-                 sprintf("%d-08-01", year(R)),
-                 sprintf("%d-08-01", year(R) - 1)))
-}
+## predtimechart needs the observed history present for every as_of snapshot (a
+## snapshot missing early weeks won't render), so each snapshot spans all weeks
+## from the start of the 2014/2015 season up to R -- recent weeks at their
+## real-time (as-of-R) value, older weeks filled from the latest available
+## version. We start at 2014/2015 (the season before the first forecastable one)
+## rather than the full series, since there are no forecasts to show before then.
+history_start <- as.Date("2014-10-01")
 
 make_snapshot <- function(R) {
   vint <- vintage |>
@@ -110,7 +115,7 @@ make_snapshot <- function(R) {
     select(location, target_end_date, observation_v = observation)
 
   finalized_ts |>
-    filter(target_end_date >= season_start(R), target_end_date <= R) |>
+    filter(target_end_date >= history_start, target_end_date <= R) |>
     left_join(vint, by = c("location", "target_end_date")) |>
     transmute(location, target_end_date, target = "ili perc",
               observation = coalesce(observation_v, observation),
