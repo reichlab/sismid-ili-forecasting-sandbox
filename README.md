@@ -19,7 +19,7 @@ date for a prediction is the Saturday that ends an EW of interest, and can be ca
 **target end date = reference date + horizon * (7 days)**.
 
 The evaluation data for forecasts will be the weighted ILI percentage collected by the US Outpatient Influenza-like Illness Surveillance Network (ILINet).
-Ground truth target data [was downloaded](target-data/get_target_data.R) using [the epidatr R package](https://cmu-delphi.github.io/epidatr/).
+Ground truth target data [was downloaded](scripts/get_target_data.R) using [the epidatr R package](https://cmu-delphi.github.io/epidatr/).
 
 There are standard software packages to convert from dates to epidemic weeks and vice versa (*e.g.*,
 [MMWRweek](https://cran.r-project.org/web/packages/MMWRweek/) and
