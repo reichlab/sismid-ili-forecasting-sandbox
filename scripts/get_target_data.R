@@ -12,9 +12,10 @@
 #'   * time-series.csv   : a *versioned* (vintage) observed series carrying an
 #'     `as_of` column. For each forecast reference date R we record the observed
 #'     history from the start of the 2014/2015 season up to R as it was available
-#'     in real time at R (each week at its latest release on or before R). The
-#'     history is repeated in every snapshot because predtimechart needs it
-#'     present to render.
+#'     when the forecast was due (each week at its latest release on or before the
+#'     FluSight deadline, Monday of week XX+2 = R + 9 days). The history is
+#'     repeated in every snapshot because predtimechart needs it present to
+#'     render.
 #'     predtimechart uses `as_of` = reference_date, so the dashboard's observed
 #'     line shows the data a forecaster actually saw -- revealing reporting
 #'     backfill week to week.
@@ -100,15 +101,22 @@ finalized_ts <- vintage |>
 
 ## predtimechart needs the observed history present for every as_of snapshot (a
 ## snapshot missing early weeks won't render), so each snapshot spans all weeks
-## from the start of the 2014/2015 season up to R -- recent weeks at their
-## real-time (as-of-R) value, older weeks filled from the latest available
-## version. We start at 2014/2015 (the season before the first forecastable one)
-## rather than the full series, since there are no forecasts to show before then.
+## from the start of the 2014/2015 season up to R. We start at 2014/2015 (the
+## season before the first forecastable one) rather than the full series, since
+## there are no forecasts to show before then.
+##
+## Data cutoff: a forecast labelled with origin week XX (origin_date R) could use
+## data through the FluSight deadline of Monday of week XX+2 = R + 9 days -- by
+## which the release first reporting week XX (published the Friday of XX+1) is
+## available. So each week takes its latest release on or before R + 9; this
+## makes the snapshot match the vintage the forecasts were built from, so the
+## origin week shows its real-time first-reported value rather than a later
+## revision. Older weeks with no release near R + 9 fall back to finalized.
 history_start <- as.Date("2014-10-01")
 
 make_snapshot <- function(R) {
   vint <- vintage |>
-    filter(release_date <= R) |>
+    filter(release_date <= R + 9) |>
     group_by(location, target_end_date) |>
     slice_max(release_date, n = 1, with_ties = FALSE) |>
     ungroup() |>
